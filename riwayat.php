@@ -1,16 +1,14 @@
 <?php
 require_once 'config.php';
 
-// Proteksi halaman: Pastikan hanya user yang bisa akses
 if (!isset($_SESSION['id']) || $_SESSION['role'] !== 'user') {
-    header("Location: login.php");
+    header("Location: dashboard_user.php");
     exit();
 }
 
 $user_id = $_SESSION['id'];
 $nama_user = $_SESSION['nama'];
 
-// Ambil data tiket milik user yang sedang login
 $query = "SELECT * FROM tiket WHERE user_id = '$user_id' ORDER BY tgl_beli DESC";
 $result = mysqli_query($conn, $query);
 ?>
@@ -41,7 +39,6 @@ $result = mysqli_query($conn, $query);
 </head>
 <body>
 
-    <!-- Background Bintang Bergerak[cite: 11] -->
     <div id="stars-container">
         <?php for ($i = 0; $i < 40; $i++): $size = rand(1, 2); ?>
             <div class="star" style="left:<?=rand(0,100)?>%; width:<?=$size?>px; height:<?=$size?>px; --duration:<?=rand(20,40)?>s;"></div>
@@ -50,7 +47,6 @@ $result = mysqli_query($conn, $query);
 
     <div class="container py-5">
         <div class="row">
-            <!-- Sidebar Kecil[cite: 7] -->
             <div class="col-md-3 mb-4">
                 <div class="glass-card">
                     <h5 class="fw-bold text-accent">Menu Utama</h5>
@@ -61,7 +57,6 @@ $result = mysqli_query($conn, $query);
                 </div>
             </div>
 
-            <!-- Konten Riwayat[cite: 7] -->
             <div class="col-md-9">
                 <h2 class="fw-bold mb-4">Riwayat Pembelian</h2>
 
@@ -81,7 +76,6 @@ $result = mysqli_query($conn, $query);
                                 <div class="col-md-4 text-center text-md-end mt-3 mt-md-0">
                                     <?php if ($row['status'] == 'lunas'): ?>
                                         <span class="badge bg-success px-3 py-2 mb-2">LUNAS</span><br>
-                                        <!-- Barcode Otomatis via QR Server API[cite: 7] -->
                                         <div class="qr-box mt-2">
                                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=<?= $row['kode_barcode']; ?>" alt="QR Code">
                                         </div>
@@ -96,7 +90,6 @@ $result = mysqli_query($conn, $query);
                         </div>
                     <?php endwhile; ?>
                 <?php else: ?>
-                    <!-- Jika belum ada tiket[cite: 7] -->
                     <div class="glass-card text-center py-5">
                         <p class="text-secondary">Belum ada riwayat pemesanan.</p>
                         <a href="dashboard_user.php" class="btn btn-outline-primary">Pesan Tiket Pertama Kamu</a>
