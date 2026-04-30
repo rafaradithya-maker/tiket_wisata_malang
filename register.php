@@ -1,23 +1,17 @@
 <?php
-// Memanggil konfigurasi database
 require_once 'config.php';
 
-// Proses saat tombol daftar ditekan
 if (isset($_POST['register'])) {
-    $nama     = input_bersih($_POST['nama']); // Menggunakan fungsi pembersihan dari config
+    $nama     = input_bersih($_POST['nama']);
     $username = input_bersih($_POST['username']);
     $password = $_POST['password'];
     
-    // Enkripsi password agar aman
     $password_aman = password_hash($password, PASSWORD_DEFAULT);
 
-    // Cek apakah username sudah ada di database
     $cek_user = mysqli_query($conn, "SELECT * FROM users WHERE username = '$username'");
-    
     if (mysqli_num_rows($cek_user) > 0) {
-        $error = "Username sudah digunakan, cari yang lain![cite: 6]";
+        $error = "Username sudah digunakan, cari yang lain!";
     } else {
-        // Simpan data ke tabel users dengan role default 'user'[cite: 6]
         $query = "INSERT INTO users (nama, username, password, role) VALUES ('$nama', '$username', '$password_aman', 'user')";
         
         if (mysqli_query($conn, $query)) {
@@ -26,7 +20,7 @@ if (isset($_POST['register'])) {
                     window.location='login.php';
                 </script>";
         } else {
-            $error = "Terjadi kesalahan sistem saat mendaftar.[cite: 6]";
+            $error = "Terjadi kesalahan sistem saat mendaftar.";
         }
     }
 }
@@ -38,14 +32,11 @@ if (isset($_POST['register'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar Akun - wisata_malang</title>
-    <!-- Bootstrap CSS[cite: 6] -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <!-- Custom Theme CSS[cite: 11] -->
     <link rel="stylesheet" href="style_stars.css">
 </head>
 <body>
 
-    <!-- Background Bintang Bergerak[cite: 11] -->
     <div id="stars-container">
         <?php for ($i = 0; $i < 50; $i++): $size = rand(1, 3); ?>
             <div class="star" style="left:<?=rand(0,100)?>%; width:<?=$size?>px; height:<?=$size?>px; --duration:<?=rand(15,35)?>s;"></div>
@@ -88,7 +79,6 @@ if (isset($_POST['register'])) {
     </div>
 
 </body>
-<!-- Navigasi Sederhana di Halaman Auth -->
 <nav class="navbar navbar-expand navbar-dark mb-4">
     <div class="container justify-content-center">
         <ul class="navbar-nav gap-3">
